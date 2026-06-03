@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HCJ Super Mart POS</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- favicon -->
+    <link rel="icon" type="image/png"  href="./asset/logo.png">
+
+    <link rel="stylesheet" href="./css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    
+    <!-- ================================ Login Page ========================================== -->
+    <section class="login">
+        <div class="container">
+            <div class="login-card">
+                <div class="user-icon">
+                    <img src="./asset/login.png" alt="login" width="100" height="100">
+                </div>
+                <h2>LOGIN</h2>
+
+                <form id="loginForm">
+                    <input type="text" id="username" placeholder="User Name" required>
+                    <input type="password" id="password" placeholder="Password" required>
+
+                    <button type="submit">Login</button>
+                    <a href="#">Forgot Password ?</a>
+                </form>
+            </div>
+
+            <div class="title-section">
+                <h1>HCJ Super Mart</h1>
+                <h3>POS System</h3>
+            </div>
+
+        </div>
+    </section>
+
+     <!-- =================================== Nav Bar ========================================== -->
+
+    <header class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-store"></i> HCJ Super Mart POS
+        </div>
+
+        <div class="menu-toggle" id="mobile-menu">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+
+        <nav class="nav-links" id="nav-list">
+            <a href="#" onclick="showSection('dashboard-section')">Dashboard</a>
+            <a href="#" onclick="showSection('customer-section')">Customer</a>
+            <a href="#" onclick="showSection('stores-section')">Stores</a>
+            <a href="#" onclick="showSection('order-section')">Order Manage</a>
+        </nav>
+
+        <div class="nav-right">
+            <span onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> LogOut</span>
+            <span id="theme-toggle">
+                <i class="fa-regular fa-moon" id="theme-icon"></i>
+            </span>
+        </div>
+    </header>
+
+    <!-- ==================================== DASHBOARD =============================================== -->
+    <main id="main-content">
+    <section id="dashboard-section"  class="content-section active-section">
+        <h1><i class="fa-solid fa-eye"></i> DashBoard</h1>
+        <div class="date-time-box" id="currentDateTime"></div>
+
+        <!-- CARDS -->
+        <div class="cards">
+
+            <div class="card green">
+                <div class="icon"> 
+                    <i class="fa-solid fa-users"></i>
+                </div>
+                <h2 id="total-customers-count">0</h2>
+                <p>Customers</p>
+            </div>
+
+            <div class="card blue">
+                <div class="icon">
+                    <i class="fa-solid fa-box"></i>
+                </div>
+                <h2 id="total-items-count">0</h2>
+                <p>Items</p>
+            </div>
+
+            <div class="card red">
+                <div class="icon">
+                    <i class="fa-solid fa-sack-dollar"></i>
+                </div>
+                <h2 id="total-revenue-count">Rs. 0.00</h2>
+                <p>Total Revenue</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- =========================================== CUSTOMER PAGE ============================================== -->
+    <section id="customer-section" class="container-fluid mt-4 content-section">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold"><i class="fa-solid fa-users-gear"></i> Customer Management</h2>
+            <button class="btn btn-primary rounded-pill px-4 fw-bold" data-bs-toggle="modal" data-bs-target="#addCustomerModal">
+                <i class="fa-solid fa-plus me-2"></i>Add New Customer
+            </button>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-4"> <div class="input-group search-container shadow-sm">
+                    <span class="input-group-text bg-white border-end-0"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <input type="text" id="searchCustomer" class="form-control border-start-0" placeholder="Search by ID or Name">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8 mb-4">
+                <div class="table-responsive shadow-sm rounded border">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Address</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="customer-table-body">
+                            <tr>
+                                <td>1</td>
+                                <td class="fw-semibold">Hashini</td>
+                                <td>0764532211</td>
+                                <td>Ambalangoda</td>
+                                <td class="text-center">
+                                    <button class="btn btn-danger btn-sm px-3 me-1">Delete</button>
+                                    <button class="btn btn-primary btn-sm"><i class="fa-solid fa-pen-to-square"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-lg-3 details-column">
+                <div class="p-4 rounded-4 shadow-sm" style="background-color: #E0E7FF; min-height: 350px;">
+                    <h4 class="fw-bold mb-4 text-center">Customer Details</h4>
+                    <div class="text-center mb-4">
+                        <i class="fa-solid fa-circle-user" style="font-size: 80px; color: #1e2a5a;"></i>
+                    </div>
+                    <h3 id="detail-name" class="text-center fw-bold mb-4">Select a Customer</h3>
+                    
+                    <div class="ps-3 mt-4">
+                        <p><i class="fa-solid fa-phone me-3 text-primary"></i><span id="detail-phone">-</span></p>
+                        <p><i class="fa-solid fa-envelope me-3 text-primary"></i><span id="detail-email">-</span></p>
+                        <p><i class="fa-solid fa-award me-3 text-primary"></i><span id="detail-note">-</span></p>
+                        <p><i class="fa-solid fa-house me-3 text-primary"></i><span id="detail-address">-</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================ Add New Customer Pop-up Page ==================================== -->
+
+        <div class="modal fade" id="addCustomerModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content border-0 shadow-lg">
+                    <div class="modal-header text-white" style="background-color: #1e2a5a;">
+                        <h5 class="modal-title" id="exampleModalLabel text-white">
+                            <i class="fa-solid fa-users-gear me-2"></i> New Customer
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    
+                    <div class="modal-body p-4">
+                        <form id="customerForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">ID :</label>
+                                    <input type="text" id="custId" class="form-control custom-input" placeholder="C001">
+                                    
+                                    <label class="form-label fw-bold mt-3">Name :</label>
+                                    <input type="text" id="custName" class="form-control custom-input">
+                                    
+                                    <label class="form-label fw-bold mt-3">Phone No :</label>
+                                    <input type="text" id="custPhone" class="form-control custom-input">
+                                    
+                                    <label class="form-label fw-bold mt-3">Address :</label>
+                                    <textarea  id="custAddress" class="form-control custom-input" rows="3"></textarea>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Email :</label>
+                                    <input type="email" id="custEmail" class="form-control custom-input">
+                                    
+                                    <label class="form-label fw-bold mt-3">Note :</label>
+                                    <textarea id="custNote" class="form-control custom-input" rows="5"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-center gap-4 mt-5">
+                                <button type="submit" class="btn btn-save px-5">Save</button>
+                                <button type="reset" class="btn btn-reset px-5">Reset</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =================================== Stores Management Page =========================================== -->
+
+    <section id="stores-section" class="container-fluid mt-4 content-section">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold"><i class="fa-solid fa-boxes-stacked"></i> Stores Management</h2>
+            <button class="btn btn-primary rounded-pill px-4 fw-bold" data-bs-toggle="modal" data-bs-target="#addItemModal">
+                <i class="fa-solid fa-plus me-2"></i>Add New Item
+            </button>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="input-group search-container shadow-sm">
+                    <span class="input-group-text bg-white border-end-0"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <input type="text" id ="searchItem" class="form-control border-start-0" placeholder="Search by ID or Name">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="table-responsive shadow-sm rounded border bg-white">
+                    <table class="table table-hover align-middle mb-0 text-center">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Product Name</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Note</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="item-table-body">
+                            <tr>
+                                <td>I001</td>
+                                <td class="fw-semibold">Cola Drink</td>
+                                <td>Beverages</td>
+                                <td>Rs. 150.00</td>
+                                <td>120</td>
+                                <td>small</td>
+                                <td>
+                                    <div class="d-flex justify-content-center gap-1">
+                                        <button class="btn btn-danger btn-sm px-3">Delete</button>
+                                        <button class="btn btn-primary btn-sm px-2"><i class="fa-solid fa-pen-to-square"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== Add New Item Pop-up Page ========================================  -->
+
+        <div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content border-0 shadow-lg">
+                    <div class="modal-header text-white" style="background-color: #1e2a5a;">
+                        <h5 class="modal-title" id="addItemModalLabel">
+                            <i class="fa-solid fa-box-open me-2"></i> New Item
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    
+                    <div class="modal-body p-4">
+                        <form id="itemForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">ID :</label>
+                                    <input type="text" id="itemId" class="form-control custom-input" placeholder="I001">
+                                    
+                                    <label class="form-label fw-bold mt-3">Product Name :</label>
+                                    <input type="text" id="itemName" class="form-control custom-input">
+                                    
+                                    <label class="form-label fw-bold mt-3">Category :</label>
+                                    <select id="itemCategory" class="form-select custom-input">
+                                        <option selected disabled>Select Category</option>
+                                        <option value="Beverages">Beverages</option>
+                                        <option value="Snacks">Snacks</option>
+                                        <option value="Dairy">Dairy</option>
+                                    </select>
+                                    
+                                    <label class="form-label fw-bold mt-3">Note :</label>
+                                    <textarea id="itemNote" class="form-control custom-input" rows="3"></textarea>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Price :</label>
+                                    <input type="text" id="itemPrice" class="form-control custom-input" placeholder="Rs. 0.00">
+                                    
+                                    <label class="form-label fw-bold mt-3">Stock :</label>
+                                    <input type="number" id="itemStock" class="form-control custom-input">
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-center gap-4 mt-5">
+                                <button type="submit" class="btn btn-save px-5">Save</button>
+                                <button type="reset" class="btn btn-reset px-5">Reset</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================================== Orders Management Page ============================================= -->
+
+    <section id="order-section" class="container-fluid mt-4 content-section">
+        <h2 class="fw-bold mb-4"><i class="fa-solid fa-cart-shopping"></i> Order Management</h2>
+
+        <div class="row g-3">
+            <div class="col-lg-3">
+                <div class="order-card p-3 shadow-sm">
+                    <h5 class="section-title text-center p-2 mb-3">All Categories</h5>
+                    <div class="search-container mb-3 w-100">
+                        <div class="input-group rounded-pill border overflow-hidden">
+                            <span class="input-group-text bg-white border-0"><i class="fa-solid fa-magnifying-glass"></i></span>
+                            <input type="text" id="item-search-box" class="form-control border-0" placeholder="Search by ID or Name">
+                        </div>
+                    </div>
+                    <div class="item-list" id="order-item-list">
+                        <div class="d-flex justify-content-between align-items-center mb-3 p-2 border-bottom">
+                            <div>
+                                <span class="fw-bold d-block">Product Name</span>
+                                <small class="text-muted">Rs. 000.00</small>
+                            </div>
+                            <button class="btn btn-primary btn-sm rounded-pill btn-add-to-cart" data-id="${item.id}">
+                                <i class="fa-solid fa-plus"></i> Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="order-card p-3 shadow-sm mb-3">
+                    <h5 class="fw-bold mb-3 d-flex align-items-center">
+                        <i class="fa-solid fa-cart-shopping me-2"></i> Cart
+                    </h5>
+                    <div class="table-responsive" style="max-height: 150px; overflow-y: auto;">
+                        <table class="table table-sm align-middle text-center border">
+                            <thead class="table-light sticky-top">
+                                <tr>
+                                    <th>Item Name</th>
+                                    <th>Qty</th>
+                                    <th>Price</th>
+                                    <th>Total</th>
+                                    <th>Remove</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cart-table-body">
+                                </tbody>
+                        </table>
+                    </div>
+                    <div class="text-end mt-3">
+                        <h5 class="fw-bold">Sub Total : <span class="text-danger" id="sub-total">Rs. 0.00</span></h5>
+                    </div>
+                </div>
+
+                <div class="order-card p-3 shadow-sm">
+                    <h5 class="fw-bold mb-3 d-flex align-items-center">
+                        <i class="fa-solid fa-user-pen me-2"></i> Customer Details
+                    </h5>
+                    <div class="mb-2">
+                        <label class="small fw-bold">Customer ID :</label>
+                        <select id="order-cust-id" class="form-select custom-input py-1">
+                            <option value="">Select Customer ID</option>
+                        </select>
+                    </div>
+                    <div class="mb-2">
+                        <label class="small fw-bold">Customer Name :</label>
+                        <input type="text" id="order-cust-name" class="form-control custom-input py-1" readonly>
+                    </div>
+                    <div class="mb-2">
+                        <label class="small fw-bold">Phone No :</label>
+                        <input type="text" id="order-cust-phone" class="form-control custom-input py-1" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="order-card p-3 shadow-sm position-relative">
+                    <h5 class="fw-bold mb-3 d-flex align-items-center">
+                        <i class="fa-solid fa-money-bill-wave me-2"></i> Payment
+                    </h5>
+                    <div class="row g-2">
+                        <div class="col-12 mb-2">
+                            <label class="small fw-bold" id="payment-id-input">Payment ID :</label>
+                            <input type="text" class="form-control custom-input">
+                        </div>
+                        <div class="col-12 mb-2">
+                            <label class="small fw-bold">Payment Method :</label>
+                            <select id="payment-method" class="form-select custom-input">
+                                <option>Cash</option>
+                                <option>Card</option>
+                            </select>
+                        </div>
+                        <div class="col-12 mb-2">
+                            <label class="small fw-bold">Date :</label>
+                            <input type="date" id="order-date" class="form-control custom-input">
+                        </div>
+                        <div class="col-6 mb-2">
+                            <label class="small fw-bold">Sub Total :</label>
+                            <input type="text" id="payment-sub-total" class="form-control custom-input" readonly>
+                        </div>
+                        <div class="col-6 mb-2">
+                            <label class="small fw-bold">Discount :</label>
+                            <input type="text" id="order-discount" class="form-control custom-input">
+                        </div>
+                        <div class="col-6 mb-2">
+                            <label class="small fw-bold">Amount Received :</label>
+                            <input type="text" id="amount-paid" class="form-control custom-input">
+                        </div>
+                        <div class="col-6 mb-2">
+                            <label class="small fw-bold">Balance Due :</label>
+                            <input type="text" id="balance-amount" class="form-control custom-input" readonly>
+                        </div>
+                    </div>
+                    <div class="total-display mt-4 p-2 text-white text-center rounded">
+                        <h4 class="mb-0 fw-bold">Total : <span id="final-total">0.00</span></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center gap-3 mt-4 mb-5">
+            <button class="btn btn-primary order-action-btn px-4 shadow" data-bs-toggle="modal" data-bs-target="#orderHistoryModal">
+                <i class="fa-solid fa-clock-rotate-left me-2"></i>View Order History
+            </button>
+            <button class="btn btn-success order-action-btn px-4 shadow">Place Order</button>
+            <button class="btn btn-warning order-action-btn px-4 shadow text-white" onclick="clearCart()">Clear Cart</button>
+        </div>
+
+        <!--  ================================ Pop-up Order History Page ==================================== -->
+
+       <div class="modal fade" id="orderHistoryModal" tabindex="-1" aria-labelledby="orderHistoryModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title" id="orderHistoryModalLabel"><i class="fa-solid fa-list-check me-2"></i>Order History Details</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="search-box d-flex align-items-center" style="width: 300px;">
+                                <input type="text" id="order-search-input" class="form-control form-control-sm" placeholder="Search Order ID...">
+                                <button class="btn btn-sm btn-primary ms-2" id="btn-search-order" onclick="searchOrder()">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </button>
+                            </div>
+                            <button class="btn btn-sm btn-danger" onclick="deleteSelectedOrder()">Cancel Order</button>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle border" id="order-details-table">
+                                <thead class="table-light sticky-top">
+                                    <tr style="font-size: 14px;">
+                                        <th>Order ID</th>
+                                        <th>Date</th>
+                                        <th>Customer ID</th>
+                                        <th>Payment ID</th>
+                                        <th>Order Items</th>
+                                        <th>Qty</th>
+                                        <th>Method</th>
+                                        <th>Discount</th>
+                                        <th class="text-end">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="order-details-body" style="font-size: 13px;">
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="script.js"></script>
+
+<script src="controller/LoginController.js"></script>
+
+<script type="module" src="db/DB.js"></script>
+
+<script type="module" src="model/customerModel.js"></script>
+<script type="module" src="dto/customerDTO.js"></script>
+<script type="module" src="controller/customerController.js"></script>
+
+<script type="module" src="controller/itemController.js"></script>
+<script type="module" src="model/itemModel.js"></script>
+<script type="module" src="dto/itemDTO.js"></script>
+
+<script type="module" src="controller/orderController.js"></script>
+<script type="module" src="model/orderModel.js"></script>
+<script type="module" src="dto/orderDTO.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
